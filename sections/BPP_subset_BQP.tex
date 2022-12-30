@@ -1,0 +1,140 @@
+\documentclass[../main.tex]{subfiles}
+
+\begin{document}
+
+\subsection{Prerequisites}
+
+\subsubsection{Bounded error Probabilistic Polytime (BPP)}
+
+Probabilistic turing machines are a special case of NDTM where the TM is also allowed to toss a coin at each step.\\
+\noindent If language $\mathrm{L} \in \mathrm{BPP}$ and has corresponding PTM $\mathrm{M}$, then 
+\begin{equation*}
+    x \in \mathrm{L} \implies \mathrm{Pr}[\mathrm{M}(x) = 1] \ge \frac{2}{3}
+\end{equation*}
+\begin{equation*}
+    x \not\in \mathrm{L} \implies \mathrm{Pr}[\mathrm{M}(x) = 1] < \frac{1}{3}
+\end{equation*}
+
+\noindent The value $\frac{2}{3}$ can be replaced with any constant greater than $\frac{1}{2}$ without changing the class. This is because probability of all PTM corresponding to languages in $\mathrm{BPP}$ can be boosted very close to $1$.
+
+\begin{lemma}
+For all $c > 0$, let $\mathrm{BPP}_{\frac{1}{2}+\frac{1}{n^c}}$ be the class of languages $\mathrm{L}$ for which there exists a PTM $\mathrm{M}$ s.t. $\mathrm{Pr}[\mathrm{M}(x) = \mathrm{L}(x)] \ge \frac{1}{2} + \frac{1}{|x|^{-c}}$ for all $x \in \{0,1\}^*$. Then $\mathrm{BPP}_{\frac{1}{2}+\frac{1}{n^c}} = \mathrm{BPP}_{\frac{2}{3}} = \mathrm{BPP}$
+\end{lemma}
+\begin{proof}
+For a given input $x$, run the TM $\mathrm{M}$, $k$ times. Let the output of these trials be $y_1$, $y_2$, $\hdots$, $y_k$.\\
+\noindent W.k.t
+\begin{equation*}
+    \mathrm{Pr}[y_i = L(x)] \ge \frac{1}{2} + \frac{1}{n^c}
+\end{equation*}
+Lets denote $\frac{1}{2} + \frac{1}{n^c}$ as $p$. Define R.V $Y$ as follows
+\begin{equation*}
+    Y = \sum_{i=1}^{k}y_i
+\end{equation*}
+\begin{equation*}
+    \mathbb{E}[Y] = pk
+\end{equation*}
+
+\noindent Using chernoff bound, we get
+\begin{equation*}
+    \mathrm{Pr}[Y \ge (1+\delta)pk] \le e^{-\delta^2pk}
+\end{equation*}
+\noindent Similarly,
+\begin{equation*}
+    \mathrm{Pr}[Y \le (1-\delta)pk] \le e^{-\delta^2pk}
+\end{equation*}
+\noindent Now, we set the values of $\delta$ and $k$ such that the success probability very close to $1$.
+
+\noindent Therefore, any PTM with success probability greater than half can be boosted to have success probability as close to $1$ as needed.
+
+\begin{equation*}
+    \mathrm{BPP}_{\frac{1}{2}+\frac{1}{n^c}} = \mathrm{BPP}_{\frac{2}{3}} = \mathrm{BPP}
+\end{equation*}
+
+\end{proof}
+
+\subsection{Main result}
+
+\begin{theorem}
+$\mathrm{BPP}\subseteq\mathrm{BQP}$
+\end{theorem}
+\begin{proof}
+This can be achieved if we can simulate classical computations with q-ckts. To do this, we need to be able to simulate a $\mathrm{NAND}$ gate, randomness and fanout of wires.
+
+\subsubsection{NAND gate}
+
+$\mathrm{NAND}$ can be simulated using a quantum toffoli gate.
+
+\begin{center}
+    \label{img:NAND_gate}
+    \begin{quantikz}
+    \lstick{$\ket{x_1}$} & \ctrl{1} & \qw \\
+    \lstick{$\ket{x_2}$} & \ctrl{1} & \qw \\
+    \lstick{$\ket{1}$} & \targ{} & \qw & \rstick{$\ket{1\oplus x_1 x_2}$}\\
+    \end{quantikz}
+\end{center}
+
+\subsubsection{Randomness}
+
+Randomness can be achieved by using hadamard gates.
+
+\begin{center}
+    \label{img:hadamard_gate}
+    \begin{quantikz}
+    \lstick{$\ket{0}$} & \gate{H} & \qw & \rstick{$\frac{\ket{0}+\ket{1}}{\sqrt{2}}$} \\
+    \end{quantikz}
+\end{center}
+
+\subsubsection{Fanout}
+
+Computational basis states can be copied as follows.
+
+\begin{center}
+    \label{img:quantum_toffoli_gate}
+    \begin{quantikz}
+    \lstick{$\ket{x}$} & \ctrl{1} & \qw & \rstick{$\ket{x}$} \\
+    \lstick{$\ket{0}$} & \targ{} & \qw & \rstick{$\ket{x\oplus 0} = \ket{x}$} \\
+    \end{quantikz}
+\end{center}
+\end{proof}
+
+\subsection{No cloning theorem}
+
+\begin{claim}
+Arbitrary quantum states cannot be copied
+\end{claim}
+\begin{proof}
+Assume that cloning of arbitrary states is possible.
+Let $\ket{x} = a\ket{0} + b\ket{1}$. Now, we try to copy this qubit onto another qubit using a $\mathrm{CNOT}$ gate.
+
+\begin{equation*}
+    \ket{x}\ket{0} \xrightarrow{\mathrm{CNOT}} a\ket{00} + b\ket{11}
+\end{equation*}
+
+\noindent The above resultant state should be equal to $\ket{x}\ket{x}$.
+
+\begin{equation*}
+    \ket{x}\ket{x} = a^2\ket{00} + b^2\ket{11} + ab\ket{01} + ba\ket{10}
+\end{equation*}
+
+\noindent Clearly, for the two states to be equal, $ab = 0 \implies a = 0 \text{ or } b = 0$. However, setting $a = 0 \text{ or } b = 0$ causes $\ket{x}$ to become a computational state.
+\end{proof}
+
+\subsection{Error reduction}
+When $a$ and $b$ are constant values, we can boost the success rate just like in $\mathrm{BPP}$. This can also be done when $a$ and $b$ are some functions. To verify this, see the comparision between boosting $\mathrm{BQP(a,b)}$ and $\mathrm{BQP(\frac{2}{3},\frac{1}{2})}$.
+
+\begin{align*}
+    a(n) + b(n) & = 1\\
+    a(n) - b(n) & = \frac{1}{p(n)}\\
+    \implies a(n) & \ge \frac{1}{2} + \frac{1}{2*p(n)}\\
+    b(n) & \ge \frac{1}{2} - \frac{1}{2*p(n)}\\
+\end{align*}
+
+Let $k_1$ be the no of trials for $\mathrm{BQP(a,b)}$ and $k_2$ be the no of trials for $\mathrm{BQP(\frac{2}{3},\frac{1}{2})}$. Using chernoff bound, the error probability becomes $e^{\frac{-k_1}{4}(\frac{1}{2}+\frac{1}{2*p(n)})}$ for $\mathrm{BQP(a,b)}$ and $e^{\frac{-k_1}{4}\frac{2}{3}}$ for $\mathrm{BQP(\frac{2}{3},\frac{1}{2})}$. Equating both, we get
+
+\begin{equation*}
+    k_1 = \frac{4}{3}k_2(\frac{p(n)}{1+p(n)})
+\end{equation*}
+
+\noindent We can clearly see that $k_1$ and $k_2$ do not differ by much.
+
+\end{document}
