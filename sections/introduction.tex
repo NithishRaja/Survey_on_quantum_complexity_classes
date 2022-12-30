@@ -1,0 +1,22 @@
+\documentclass[../main.tex]{subfiles}
+
+\begin{document}
+
+\subsection{Bounded error Quantum Polytime BQP}
+
+Let $\mathrm{L}$ be a language and $a, b: \mathbb{N}\rightarrow [0,1]$ be functions. Then $\mathrm{L} \in \mathrm{BQP}(a,b)$ iff there exists polytime generated family of q-ckts $\mathrm{Q} = \{\mathrm{Q_n}|n\in \mathbb{N}\}$ where each ckt $\mathrm{Q_n}$ takes $n$ qubits as input and produces a single qubit as output s.t. number of gates in the circuit is polynomial in $n$ and
+
+\begin{equation*}
+    x \in L \implies \mathrm{Pr}[\mathrm{Q}\text{ accepts }x] \ge a(|x|)
+\end{equation*}
+\begin{equation*}
+    x \not\in L \implies \mathrm{Pr}[\mathrm{Q}\text{ accepts }x] \le b(|x|)
+\end{equation*}
+
+\noindent It is also necessary that the functions $a$ and $b$ satisfy the following condition
+\begin{equation*}
+    a(|x|) - b(|x|) \ge \frac{1}{p(|x|)}
+\end{equation*}
+where $p$ is some polynomial.
+
+\end{document}
