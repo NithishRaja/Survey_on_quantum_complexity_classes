@@ -1,0 +1,38 @@
+\documentclass[../main.tex]{subfiles}
+
+\begin{document}
+
+\section{BQP subroutine}
+
+\subsection{Main result}
+
+\begin{theorem}
+$\mathrm{BQP}^\mathrm{BQP} = \mathrm{BQP}$ \cite{BBBV97}
+\end{theorem}
+\begin{proof}
+\begin{claim}
+$\mathrm{BQP}\subseteq\mathrm{BQP}^\mathrm{BQP}$
+\end{claim}
+\begin{proof}
+Trivially.
+\end{proof}
+\begin{claim}
+$\mathrm{BQP}^\mathrm{BQP}\subseteq\mathrm{BQP}$
+\end{claim}
+\begin{proof}
+
+To show that circuit for language in $\mathrm{BQP}^\mathrm{BQP}$ is in $\mathrm{BQP}$, we need to show that the circuit is poly size, the circuit gives correct output with constant probability $>\frac{1}{2}$ and the superposition outputted by the $\mathrm{BQP}$ oracle will not affect the commputation.
+
+\noindent In worst case, poly-many calls are made to the oracle. SInce any $\mathrm{BQP}$ ckt is of poly-size, any ckt in $\mathrm{BQP}^\mathrm{BQP}$ can have size which is atmost product of 2 polynomials (which is still poly size).
+
+\noindent Success probability of any $\mathrm{BQP}$ algorithm that runs in time $\mathrm{T}(n)$ can be boosted to $1-\epsilon$ success probability that runs in time $\mathrm{T}(n)\log(\frac{1}{\epsilon})$. Using this, we can ensure that success probability of any ckt in $\mathrm{BQP}^\mathrm{BQP}$ is some constant $>\frac{1}{2}$.
+
+\noindent We only need the output state from the $\mathrm{BQP}$ oracle. This is easy to obtain since we can reversibly uncompute and end up with only the input and output states.
+
+\noindent Using the above three points, we can see that $\mathrm{BQP}^\mathrm{BQP}\subseteq\mathrm{BQP}$.
+
+\end{proof}
+\noindent Using above two claims, we can easily see that $\mathrm{BQP}^\mathrm{BQP}=\mathrm{BQP}$.
+\end{proof}
+
+\end{document}
