@@ -1,0 +1,48 @@
+\documentclass[../main.tex]{subfiles}
+
+\begin{document}
+
+\section{BQP is contained in PSAPCE}
+
+\subsection{Prerequisites}
+
+\subsubsection{Polynomial space (PSPACE)}
+
+Languages which can be decided by a turing machine by only using space polynomial in input size.
+
+\subsection{Main result}
+
+\begin{theorem}
+$\mathrm{BQP}\subseteq\mathrm{PSPACE}$ \cite{ADH97}
+\end{theorem}
+\begin{proof}
+The computation tree is built the same way as shown in $\mathrm{BQP}\subseteq\mathrm{EXP}$. All the leaves contain labels of the form $\frac{1}{\sqrt{2^h}}\mathrm{sign}(P)\ket{x_P}$ where $P$ refers to the path.\\
+
+\noindent The output we are concerned with is the first bit of the ancillary qubits. Each path is of poly size and there are $2^h$ such paths. We deterministically go over each path and store the output. This way we get the number of paths that output $1$ and number of paths that output $0$. Clearly, this is a poly space and exponential time deterministic algorithm to simulate the $\mathrm{BQP}$ algorithm.\\
+
+\noindent We can be more efficient on the number of bits used by calculating probabilities of $0$ and $1$ instead of the output.\\
+
+\noindent Amplitude of any state $\ket{s}$ is written as follows
+\begin{equation*}
+    \frac{1}{\sqrt{2^h}}\sum_P\mathrm{sign}(P)\ket{x_P} \tag{$\ket{x_P} = \ket{s}$}
+\end{equation*}
+
+\noindent If we only consider states where output qubit is $1$, we get
+\begin{equation*}
+    \frac{1}{\sqrt{2^h}}\sum_P\mathrm{sign}(P)\ket{x_P} \tag{$\ket{x_{P[0]}} = 1$}
+\end{equation*}
+
+\noindent The corresponding probability will be
+\begin{equation*}
+    \frac{1}{2^h}\sum_P\sum_{P^\prime}\mathrm{sign}(P)\mathrm{sign}(P^\prime)\tag{$x_{P[0]}=x_{P^\prime[0]}=1$}
+\end{equation*}
+
+\noindent Using this, we calculate the difference between probability of accepting and probability of rejecting
+\begin{equation*}
+    \mathrm{Pr[accept]}-\mathrm{Pr[reject]} = \frac{1}{2^h}\sum_P\sum_{P^\prime}\mathrm{sign}(P)\mathrm{sign}(P^\prime)(-1)^{1-x_{P[0]}}
+\end{equation*}
+
+\noindent If this value is $>\frac{1}{2}$ then the language accepts and if the value is $<\frac{1}{2}$, the language rejects.
+\end{proof}
+
+\end{document}
