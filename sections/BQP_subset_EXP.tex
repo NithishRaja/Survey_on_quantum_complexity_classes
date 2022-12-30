@@ -1,0 +1,66 @@
+\documentclass[../main.tex]{subfiles}
+
+\begin{document}
+
+\section{BQP is contained in EXP}
+
+\subsection{Prerequisites}
+
+\subsubsection{Exponential time (EXP)}
+
+Languages which can be decided by a deterministic turing machine running for time $2^{p(n)}$ for some polynomial $p$.
+
+\subsection{Exponential time with linear exponent (E)}
+
+Languages which can be decided by a deterministic turing machine running for time $2^{\mathbb{O}(n)}$.
+
+\subsection{Main result}
+
+\begin{theorem}
+$\mathrm{BQP}\subseteq\mathrm{EXP}$
+\end{theorem}
+\begin{proof}
+Since we can simulate all quantum gates using only toffoli and hadamard gates, we assume that the quantum circuit only consists of toffoli and haramard gates (this does not cause a significant blow up in size of the circuit).
+
+\noindent Toffoli gates do not affect the input qubits they act on. However, hadamard gates cause the input qubits to go into a superposition.
+
+\noindent Using this, we can build a computation tree where the leaves are labels of final states (the labels need not be unique). Clearly, depth of the tree is the number of hadamard gates.
+
+\begin{center}
+\begin{tikzpicture}
+\node[circle,draw](z){$\mathrm{H}$}[level/.style={sibling distance=60mm/#1}]
+    child{node[circle,draw](a){$\mathrm{H}$}
+        child{node[circle,draw](aa){$\mathrm{H}$}
+            child{node(aaa){$\vdots$}
+                child{node[circle,draw](aaaa){$l_1$}}
+                child{node[circle,draw](aaab){$l_2$}}
+            }
+            child{node(aab){$\vdots$}}
+        }
+        child{node[circle,draw](ab){$\mathrm{H}$}
+            child{node(aba){$\vdots$}}
+            child{node(abb){$\vdots$}}
+        }
+    }
+    child{node[circle,draw](b){$\mathrm{H}$}
+        child{node[circle,draw](ba){$\mathrm{H}$}
+            child{node(baa){$\vdots$}}
+            child{node(bab){$\vdots$}}
+        }
+        child{node[circle,draw](bb){$\mathrm{H}$}
+            child{node(bba){$\vdots$}}
+            child{node(bbb){$\vdots$}
+                child{node[circle,draw](bbba){$l_i$}}
+                child{node[circle,draw](bbbb){$l_j$}}
+            }
+        }
+    }
+;
+\path (aaab) -- (bbba) node(c)[midway]{$\hdots$};
+\end{tikzpicture}
+\end{center}
+
+\noindent It is easy to see that the number of leaves are exponential in number of hadamard gates and number of hadamard gates is some polynomial in number of input qubits. Therefore, we can compute all the leaves in exponential time using a classical computer.
+\end{proof}
+
+\end{document}
