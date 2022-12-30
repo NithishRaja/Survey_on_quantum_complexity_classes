@@ -1,0 +1,53 @@
+\documentclass[../main.tex]{subfiles}
+
+\begin{document}
+
+\section{BQP is contained in PP}
+
+\subsection{Prerequisites}
+
+\subsubsection{Probabilistic polytime (PP)}
+
+\noindent If language $\mathrm{L} \in \mathrm{PP}$ and has corresponding PTM $\mathrm{M}$, then 
+\begin{equation*}
+    x \in \mathrm{L} \implies \mathrm{Pr}[\mathrm{M}(x) = 1] \ge \frac{1}{2} + f(n)
+\end{equation*}
+\begin{equation*}
+    x \not\in \mathrm{L} \implies \mathrm{Pr}[\mathrm{M}(x) = 1] < \frac{1}{2} - f(n)
+\end{equation*}
+Boosting is not possible for languages in $\mathrm{PP}$.
+
+\subsection{Main result}
+
+\begin{theorem}
+$\mathrm{BQP}\subseteq\mathrm{PP}$
+\end{theorem}
+\begin{proof}
+\noindent The computation tree is constructed as in $\mathrm{BQP}\subset\mathrm{EXP}$. By choosing left or right path at each node with equal probability, we randomly select 2 paths. If the labels are corresponding to the two paths are different, we output $1$ w.p $>\frac{1}{2}$ or output $-1$ w.p $<\frac{1}{2}$. If the labels match, we output $\mathrm{sign}(P)\mathrm{sign}(P\prime)(-1)^{1-x_{p[0]}}$.\\
+
+\noindent Lets assume that the labels will not match w.p $q$ and $1$ is outputted w.p $\frac{1}{2}+k$.
+
+\begin{align*}
+    \therefore \mathbb{E}\mathrm{[output]} &= q(\frac{1}{2}+k)(1) + q(\frac{1}{2}-k)(-1)\\
+    &+(1-q)\sum_P\sum_{P\prime}\mathrm{sign}(P)\mathrm{sign}(P\prime)(-1)^{1-x_{p[0]}}\\
+    &= 2kq +(1-q)\sum_P\sum_{P\prime}\mathrm{sign}(P)\mathrm{sign}(P\prime)(-1)^{1-x_{p[0]}}\\
+\end{align*}
+
+\noindent From $\mathrm{BQP}\subset\mathrm{PSPACE}$, w.k.t
+\begin{align*}
+    x\in\mathrm{L} &\implies \sum_P\sum_{P\prime}\mathrm{sign}(P)\mathrm{sign}(P\prime)(-1)^{1-x_{p[0]}} > \frac{1}{2}\\
+    x\not\in\mathrm{L} &\implies \sum_P\sum_{P\prime}\mathrm{sign}(P)\mathrm{sign}(P\prime)(-1)^{1-x_{p[0]}} < \frac{-1}{2}\\
+\end{align*}
+\begin{align*}
+    \therefore x \in \mathrm{L} &\implies \mathbb{E}\mathrm{[output]} > \frac{1}{2} + (2k-\frac{1}{2})q\\
+    x \not\in \mathrm{L} &\implies \mathbb{E}\mathrm{[output]} < \frac{-1}{2} + (2k+\frac{1}{2})q\\
+\end{align*}
+
+\noindent Setting $k\in[0,\frac{1}{2}]$ and $q\in[0,1]$, we get
+\begin{align*}
+    x \in \mathrm{L} &\implies \mathbb{E}\mathrm{[output]} > 0\\
+    x \not\in \mathrm{L} &\implies \mathbb{E}\mathrm{[output]} < 0\\
+\end{align*}
+\end{proof}
+
+\end{document}
