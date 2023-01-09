@@ -1,0 +1,46 @@
+\documentclass[../main.tex]{subfiles}
+
+\begin{document}
+
+\subsection{Prerequsites}
+
+\subsubsection{Postselection}
+
+Postselect means to condition the probability space upon the occurrence of an event.
+
+\noindent In computations that involve randomness, to postselect on an event means to disregard all computational paths where the event does not occur.
+
+\subsubsection{PostBQP}
+
+$\mathrm{PostBQP}$ is the class of problems that can be solved by a $\mathrm{BQP}$ circuit that can postselect.
+
+Formally, every language $\mathrm{L}$ in $\mathrm{PostBQP}$ has a family of circuits $\{C_n\}$ s.t.
+\begin{enumerate}
+	\item After applying $\{C_n\}$ to $\ket{00\hdots 0}\otimes\ket{x}$, the first qubit had a non-zero probability of being $\ket{1}$
+	\item If $x \in \mathrm{L}$, $\mathrm{Pr}[\text{second qubit = } \ket{1} | \text{first qubit = } \ket{1}] \ge \frac{2}{3}$
+	\item If $x \not\in \mathrm{L}$, $\mathrm{Pr}[\text{second qubit = } \ket{1} | \text{first qubit = } \ket{1}] \le \frac{1}{3}$
+\end{enumerate}
+
+\noindent Success probability of $\mathrm{PostBQP}$ machines can be boosted in the same way the success probability of a $\mathrm{BQP}$ machine is boosted.
+
+\subsection{Main result}
+
+\begin{theorem}
+	$\mathrm{PostBQP} = \mathrm{PP}$
+\end{theorem}
+\begin{proof}
+	\begin{claim}
+		$\mathrm{PostBQP} \subset \mathrm{PP}$
+	\end{claim}
+	\begin{proof}
+		proof of claim 1
+	\end{proof}
+	\begin{claim}
+		$\mathrm{PP} \subset \mathrm{PostBQP}$
+	\end{claim}
+	\begin{proof}
+		proof of claim 2
+	\end{proof}
+\end{proof}
+
+\end{document}
