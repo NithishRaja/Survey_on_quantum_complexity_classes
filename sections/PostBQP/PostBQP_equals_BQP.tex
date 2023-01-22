@@ -26,21 +26,47 @@ Formally, every language $\mathrm{L}$ in $\mathrm{PostBQP}$ has a family of circ
 \subsection{Main result}
 
 \begin{theorem}
-	$\mathrm{PostBQP} = \mathrm{PP}$
+	$\mathrm{PostBQP} = \mathrm{PP}$ \cite{Aar05}
 \end{theorem}
 \begin{proof}
 	\begin{claim}
-		$\mathrm{PostBQP} \subset \mathrm{PP}$
+		$\mathrm{PostBQP} \subseteq \mathrm{PP}$
 	\end{claim}
 	\begin{proof}
-		proof of claim 1
+		W.l.o.g we assume that the circuit only contains hadamard and toffoli gates. Next we build the computation tree. Now, check if $\ket{11}$ occurs more than $\ket{10}$. This is simply computing majority which is in $\mathrm{PP}$. Clearly, this is a polytime reduction from any problem in $\mathrm{PostBQP}$ to majority.
 	\end{proof}
 	\begin{claim}
-		$\mathrm{PP} \subset \mathrm{PostBQP}$
+		$\mathrm{PP} \subseteq \mathrm{PostBQP}$
 	\end{claim}
 	\begin{proof}
-		proof of claim 2
+		One way to show $\mathrm{PP}\subseteq\mathrm{PostBQP}$ is to give a $\mathrm{PostBQP}$ algorithm to calculate majority (calculating majority is $\mathrm{PP-complete}$).\\
+		\noindent Consider function $f:\{0,1\}^n\rightarrow\{0,1\}$ s.t. $s = |\{x|f(x)=1\}|$. Our $\mathrm{PostBQP}$ algorithm needs to differentiate between the cases $s<2^{n/2}$ and $s\ge 2^{n/2}$.
+		\begin{center}
+		\label{qckt:PP_inside_PostBQP}
+		\begin{quantikz}
+			\lstick{$\ket{0}^{\otimes n}$} & \qwbundle{n} & \gate{H^{\otimes n}} & \gate[wires=2][2cm]{U_f} & \gate{H^{\otimes n}} & \qw \\
+			& \lstick{$\ket{0}$} & \qw & \qw & \qw & \\
+		\end{quantikz}
+		\end{center}
+		\begin{equation*}
+			\ket{0^{\otimes n}}\ket{0} \xrightarrow{H^{\otimes n}\otimes I} \frac{1}{\sqrt{2^n}}\sum_{x\in\{0,1\}^n}\ket{x}\ket{f(x)}
+		\end{equation*}
+		\noindent Applying hadamard on any $\ket{x}$ gives us an equal superposition of all states with amplitudes being $\pm\frac{1}{\sqrt{2^n}}$.\\
+		\noindent We apply $H^{\otimes n}$ on first register and look only at $\ket{00\hdots 0}$. Each state $\ket{x}$ contributes $\frac{1}{\sqrt{n}}$ to amplitude of $\ket{00\hdots 0}$ upon applying $H$ to the first register
+		\begin{equation*}
+			\frac{1}{\sqrt{2^n}}\sum_{x\in\{0,1\}^n}\ket{x}\ket{f(x)} \xrightarrow{H^{\otimes n}\otimes I} \ket{00\hdots 0}\sum_{x\in \{0,1\}^n}\ket{f(x)} + \Phi
+		\end{equation*}
+		\noindent Now, we postselect on the first register being $\ket{00\hdots 0}$. The second register will then become
+		\begin{equation*}
+			\ket{\psi} = \frac{(2^n-s)\ket{0}+s\ket{1}}{\sqrt{(2^n-s)^2+s^2}}\tag{$s=|\{x|f(x)=1\}|$}
+		\end{equation*}
+		\noindent Now prepare the state $\alpha\ket{0}\ket{\psi}+\beta\ket{1}H\ket{\psi}$ and postselect on the second register being $\ket{1}$. The first register becomes
+		\begin{equation*}
+			\frac{\alpha s\ket{0}+\beta\sqrt{1/2}(2^n-2s)\ket{1}}{\sqrt{\alpha^2s^2+(\beta^2/2)(2^n-2s)^2}}
+		\end{equation*}
+		\noindent By setting $\alpha$  and $\beta$ to appropriate values, we can distinguish between the cases $s<2^{n/2}$ and $s\ge 2^{n/2}$.
 	\end{proof}
+	\noindent Combining the above claims, we get $\mathrm{PostBQP} = \mathrm{PP}$.
 \end{proof}
 
 \end{document}
